@@ -32,12 +32,31 @@ d.dept_no = de.dept_no;
 
 --query 5: first name, last name, sex for all with Hercules as first name, last name starting with B
 --CREATE VIEW q5 AS
+SELECT first_name, last_name, sex
+FROM employees
+WHERE first_name = 'Hercules'
+AND last_name LIKE 'B%';
 
---query 6: 
+--query 6: all employees in sales department, with their employee number, last name, first name, dept name
 --CREATE VIEW q6 AS
+SELECT e.emp_no, e.last_name, e.first_name, d.dept_name
+FROM employees AS e
+WHERE emp_no IS IN (
+    SELECT emp_no FROM dept_emp
+    WHERE dept_no IS IN (
+        SELECT d.dept_name FROM departments AS d
+        )
+)
+--use subquery to find department names of each employee (dept_name -> dept_emp -> employee)
 
---query 7: 
+--query 7: all employees in sales and development departments, with their employee number, last name, first name, dept name
 --CREATE VIEW q7 AS
+SELECT e.emp_no, e.last_name, e.first_name, d.dept_name
+FROM employees AS e
 
---query 8: 
+--query 8: frequency count of employee last names, in descending order
 --CREATE VIEW q8 AS
+SELECT last_name, COUNT(*)
+FROM employees
+GROUP BY last_name
+ORDER BY COUNT(*) DESC;
