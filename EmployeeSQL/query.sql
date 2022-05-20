@@ -41,18 +41,21 @@ AND last_name LIKE 'B%';
 --CREATE VIEW q6 AS
 SELECT e.emp_no, e.last_name, e.first_name, d.dept_name
 FROM employees AS e
-WHERE emp_no IS IN (
-    SELECT emp_no FROM dept_emp
-    WHERE dept_no IS IN (
-        SELECT d.dept_name FROM departments AS d
-        )
-)
---use subquery to find department names of each employee (dept_name -> dept_emp -> employee)
+INNER JOIN dept_emp AS de ON
+de.emp_no = e.emp_no
+INNER JOIN departments AS d ON
+d.dept_no = de.dept_no
+WHERE dept_name = 'Sales'
 
 --query 7: all employees in sales and development departments, with their employee number, last name, first name, dept name
 --CREATE VIEW q7 AS
 SELECT e.emp_no, e.last_name, e.first_name, d.dept_name
 FROM employees AS e
+INNER JOIN dept_emp AS de ON
+de.emp_no = e.emp_no
+INNER JOIN departments AS d ON
+d.dept_no = de.dept_no
+WHERE dept_name = 'Sales' OR dept_name = 'Development'
 
 --query 8: frequency count of employee last names, in descending order
 --CREATE VIEW q8 AS
